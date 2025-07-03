@@ -19,7 +19,7 @@ NavigationToolbar2Tk)
 
 
 
-conn = sqlite3.connect("C:\\Users\\Tejaswini\\Downloads\\shop ms\\1mart.db")
+conn = sqlite3.connect('amart.db')
 c = conn.cursor()
 conn.commit()
 # date
@@ -33,19 +33,19 @@ def show_frame(frame):
 root = Tk()
 root.geometry("1366x768+0+0")
 root.title("Store management System")
-root.title("KJ Mart-Store management System")
+root.title("PANTRY PRIDE GROCERIES-Store management System")
 root.resizable(width=False, height=False)
 root.rowconfigure(0, weight=1)
 root.columnconfigure(0, weight=1)
-frame1 = tkinter.Frame(root)
-frame11= tkinter.Frame(root, bg="orange")
-frame2 = tkinter.Frame(root)
-frame3 = tkinter.Frame(root)
-frame4 = tkinter.Frame(root, bg="orange")
-frame5 = tkinter.Frame(root)
-frame6 = tkinter.Frame(root)
-frame7 = tkinter.Frame(root, bg="orange")
-frame8 = tkinter.Frame(root, bg="orange")
+frame1 = Frame(root, bg="purple")  # light purple
+frame11=Frame(root,  bg="purple")
+frame2 = Frame(root, bg="purple")  # very light purple
+frame3 = Frame(root, bg="purple")  # light pinkish purple
+frame4 = Frame(root, bg="purple")  # light purple
+frame5 = Frame(root)  # very light purple
+frame6 = Frame(root)  # light pinkish purple
+frame7 = Frame(root, bg="purple")  # light purple
+frame8 = Frame(root, bg="purple")  # light purple
 for frame in (frame1, frame2, frame3, frame4, frame5,frame11,frame6,frame7,frame8):
     frame.grid(row=0, column=0, sticky='nsew')
 # --------------------------------------------Main window----------------------------------------
@@ -57,6 +57,7 @@ product_id = []
 # list for labels
 labels_list = []
 my_list=[]
+
 
 # all functions
 def change_func():
@@ -151,7 +152,7 @@ def display_analysis_results(results, frequent_items, min_support, frame):
 
 
 def analysis(frame):
-    data = pd.read_csv('C:\\Users\\Tejaswini\\Downloads\\shop ms\\final2.csv')
+    data = pd.read_csv('C:\\Users\\shish\\pythonProject\\final.csv')
     data['product'] = data['product'].str.strip()
 
     basket_France = (data
@@ -186,9 +187,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import tkinter as tk
 from tkinter import ttk
 
-
 def bar(frame):
-    data = pd.read_csv('C:\\Users\\Tejaswini\\Downloads\\shop ms\\final2.csv')
+    data = pd.read_csv('C:\\Users\\shish\\pythonProject\\final.csv')
     data['product'] = data['product'].str.strip()
 
     basket_France = (data
@@ -200,7 +200,7 @@ def bar(frame):
         return 0 if x <= 0 else 1
 
     # Encoding the datasets
-    basket_encoded = basket_France.applymap(hot_encode)
+    basket_encoded = basket_France.map(hot_encode)
     basket_France = basket_encoded
 
     # Building the model
@@ -208,35 +208,30 @@ def bar(frame):
 
     # Collecting the inferred rules
     rules = association_rules(frq_items, metric="lift", min_threshold=1)
-    rules = rules.sort_values(['conviction'], ascending=False)
+    rules = rules.sort_values(['confidence', 'lift'], ascending=[False, False])
+    fig, ax = plt.subplots()
 
-    # Preparing antecedents for plotting
-    rules['antecedents'] = rules['antecedents'].apply(lambda x: ', '.join(list(x)))
+    scatter = ax.scatter(rules['support'], rules['confidence'], alpha=0.6)
 
-    # Creating the bar plot
-    fig, ax = plt.subplots(figsize=(8, 6))
-    rules.plot(kind='bar', x='antecedents', y='conviction', ax=ax, color='skyblue', alpha=0.7)
-
-    ax.set_title('Antecedents vs Conviction')
-    ax.set_xlabel('Antecedents')
-    ax.set_ylabel('Conviction')
-    ax.tick_params(axis='x', rotation=90)  # Rotate x labels for better readability
+    ax.set_title('Support vs Confidence')
+    ax.set_xlabel('Support')
+    ax.set_ylabel('Confidence')
 
     # Embed the plot in Tkinter
-    canvas = FigureCanvasTkAgg(fig, master=frame)
+    canvas = FigureCanvasTkAgg(fig, master=frame6)
     canvas.draw()
     canvas.get_tk_widget().pack()
-    close_button = ttk.Button(frame, text="Close", command=lambda: show_frame(frame11))
+    close_button = ttk.Button(frame6, text="Close", command=lambda: show_frame(frame11))
     close_button.pack()
 
 
 
 def ownpas(U2name,Passwd2):
-    with open("C:\\Users\\Tejaswini\\Downloads\\o1.txt",'r') as f11:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\owner1.txt",'r') as f11:
         user2=f11.read()
-    with open("C:\\Users\\Tejaswini\\Downloads\\o2.txt",'r') as f22:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\owner2.txt",'r') as f22:
         pass2=f22.read()
-    reg = "^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!#%?&]{6,20}$"
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
     pat = re.compile(reg)
 
     # searching regex
@@ -250,9 +245,9 @@ def ownpas(U2name,Passwd2):
 
 
     elif mat:
-        with open("C:\\Users\\Tejaswini\\Downloads\\o1.txt", 'w') as f11:
+        with open("C:\\Users\\shish\\OneDrive\\Documents\\owner1.txt", 'w') as f11:
             f11.write(U2name)
-        with open("C:\\Users\\Tejaswini\\Downloads\\o2.txt", 'w') as f22:
+        with open("C:\\Users\\shish\\OneDrive\\Documents\\owner2.txt", 'w') as f22:
             f22.write(Passwd2)
         tkinter.messagebox.showinfo(
             "done", "your username and password are successfully updated")
@@ -269,11 +264,11 @@ def ownpas(U2name,Passwd2):
 
 
 def emppas(Uname3, Passwd3):
-    with open("C:\\Users\\Tejaswini\\Downloads\\e1.txt", 'r') as f33:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\emp1.txt", 'r') as f33:
         user3 = f33.read()
-    with open("C:\\Users\\Tejaswini\\Downloads\\e2.txt", 'r') as f44:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\emp2.txt", 'r') as f44:
         passw3 = f44.read()
-    reg = "^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!#%?&]{6,20}$"
+    reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
     pat = re.compile(reg)
 
     # searching regex
@@ -290,9 +285,9 @@ def emppas(Uname3, Passwd3):
 
 
     elif mat1:
-        with open("C:\\Users\\Tejaswini\\Downloads\\e1.txt", 'w') as f33:
+        with open("C:\\Users\\shish\\OneDrive\\Documents\\emp1.txt", 'w') as f33:
             f33.write(Uname3)
-        with open("C:\\Users\\Tejaswini\\Downloads\\e2.txt", 'w') as f44:
+        with open("C:\\Users\\shish\\OneDrive\\Documents\\emp2.txt", 'w') as f44:
             f44.write(Passwd3)
         tkinter.messagebox.showinfo(
             "done", "your username and password are successfully updated")
@@ -388,20 +383,20 @@ def add_to_cart():
             global total_l
             global labels_list
             tempname = Label(right, text=str(products_list[counter]), font=(
-                'arial 18 bold'), bg='orange', fg='white')
+                'arial 18 bold'), bg='purple', fg='white')
             tempname.place(x=0, y=y_index)
             labels_list.append(tempname)
             tempqt = Label(right, text=str(product_quantity[counter]), font=(
-                'arial 18 bold'), bg='orange', fg='white')
+                'arial 18 bold'), bg='purple', fg='white')
             tempqt.place(x=300, y=y_index)
             labels_list.append(tempqt)
             tempprice = Label(right, text=str(
-                product_price[counter]), font=('arial 18 bold'), bg='orange', fg='white')
+                product_price[counter]), font=('arial 18 bold'), bg='purple', fg='white')
             tempprice.place(x=500, y=y_index)
             labels_list.append(tempprice)
             y_index += 40
             counter += 1
-            # total configure
+            # total configurel̥
             total_l.configure(
                 text="Total: Rs." + str(sum(product_price)))
 
@@ -424,7 +419,7 @@ def generate_bill():
     if not os.path.exists(directory):
         os.makedirs(directory)
     # TEMPLATES FOR THE BILL
-    company = "\t\t\t\tKJ Somaiya Pvt. Ltd.\n"
+    company = "\t\t\t\tPANTRY PRIDE GROCERIES Pvt. Ltd.\n"
     address = "\t\t\t\tMumbai, India\n"
     phone = "\t\t\t\t\t998898989998\n"
     sample = "\t\t\t\t\tInvoice\n"
@@ -466,7 +461,7 @@ def generate_bill():
     res = [list(x) for x in zip(*n)]
     for i in res:
         print(i)
-    with open("C:\\Users\\Tejaswini\\Downloads\\shop ms\\final1.csv", 'a') as f1:
+    with open('b1.csv', 'a') as f1:
         writer = csv.writer(f1)
         for i in res:
             writer.writerow(i)
@@ -482,8 +477,8 @@ def generate_bill():
 
         # Usage example:
 
-    input_file = "C:\\Users\\Tejaswini\\Downloads\\shop ms\\final1.csv"
-    output_file = 'C:\\Users\\Tejaswini\\Downloads\\shop ms\\final2.csv'
+    input_file = 'b1.csv'
+    output_file = 'C:\\Users\\shish\\pythonProject\\final.csv'
     remove_empty_rows(input_file, output_file)
 
 
@@ -520,34 +515,34 @@ def generate_bill():
 
 
 # frame1
-left = Frame(frame1, width=700, height=768, bg='floral white')
+left = Frame(frame1, width=700, height=768, bg='lavender')
 left.pack(side=LEFT)
-right = Frame(frame1, width=666, height=768, bg='orange')
+right = Frame(frame1, width=666, height=768, bg='purple')
 right.pack(side=RIGHT)
 # components
-heading = Label(left, text="KJ Mart", font=(
-    'arial 40 bold'), bg='floral white')
+heading = Label(left, text="PANTRY PRIDE GROCERIES", font=(
+    'stencil 40 bold'), bg='lavender')
 heading.place(x=0, y=0)
 date_label = Label(right, text="Today's Date: " +
-                               str(date), font=('arial 16 bold'), bg='orange', fg='white')
+                               str(date), font=('arial 16 bold'), bg='purple', fg='white')
 date_label.place(x=0, y=0)
 
 # table invoice==============================================================
 tproduct = Label(right, text="Products", font=(
-    'arial 16 bold'), bg='orange', fg='white')
+    'arial 16 bold'), bg='purple', fg='white')
 tproduct.place(x=0, y=60)
 tquantity = Label(right, text="Quantity", font=(
-    'arial 16 bold'), bg='orange', fg='white')
+    'arial 16 bold'), bg='purple', fg='white')
 tquantity.place(x=280, y=60)
 tamount = Label(right, text="Amount", font=(
-    'arial 16 bold'), bg='orange', fg='white')
+    'arial 16 bold'), bg='purple', fg='white')
 tamount.place(x=480, y=60)
 # enter stuff
 enterid = Label(left, text="Enter Product's ID", font=(
-    'arial 18 bold'), bg='floral white')
+    'arial 18 bold'), bg='lavender')
 enterid.place(x=0, y=80)
 enteride = Entry(left, width=12, font=(
-    'arial 18 bold'), bg='orange')
+    'arial 18 bold'), bg='white')
 enteride.place(x=230, y=80)
 enteride.focus()
 # button
@@ -557,20 +552,20 @@ search_btn = Button(
 search_btn.place(x=400, y=80)
 # fill it later by the function ajax
 productname = Label(left, text="", font=(
-    'arial 27 bold'), bg='floral white', fg='steelblue')
+    'arial 27 bold'), bg='lavender', fg='purple')
 productname.place(x=0, y=250)
 pprice = Label(left, text="", font=(
-    'arial 27 bold'), bg='floral white', fg='steelblue')
+    'arial 27 bold'), bg='lavender', fg='purple')
 pprice.place(x=0, y=290)
 # total label
 total_l = Label(right, text="", font=(
-    'arial 40 bold'), bg='orange', fg='white')
+    'arial 40 bold'), bg='purple', fg='white')
 total_l.place(x=0, y=600)
 frame1.bind("<Return>", ajax)
 frame1.bind("<Up>", add_to_cart)
 frame1.bind("<space>", generate_bill)
 Prod_List = Label(frame1, text="Product list : ",
-                  font=('arial 16 bold'), bg='floral white')
+                  font=('arial 16 bold'), bg='lavender')
 Prod_List.place(x=90, y=120)
 # Combobox creation
 n = StringVar()
@@ -588,35 +583,35 @@ ProductList.place(x=250, y=125)
 ProductList.current(0)
 # create the quantity and the discount label
 quantity_l = Label(left, text="Enter Quantity", font=(
-    'arial 18 bold'), bg='floral white')
+    'arial 18 bold'), bg='lavender')
 quantity_l.place(x=0, y=370)
 quantity_e = Entry(left, width=25,
-                   font=('arial 18 bold'), bg='orange')
+                   font=('arial 18 bold'), bg='white')
 quantity_e.place(x=190, y=370)
 quantity_e.focus()
 # discount
 discount_l = Label(left, text="Enter Discount", font=(
-    'arial 18 bold'), bg='floral white')
+    'arial 18 bold'), bg='lavender')
 discount_l.place(x=0, y=410)
 discount_e = Entry(left, width=25,
-                   font=('arial 18 bold'), bg='orange')
+                   font=('arial 18 bold'), bg='white')
 discount_e.place(x=190, y=410)
 discount_e.insert(END, 0)
 # add to cart button
 add_to_cart_btn = Button(
-    left, text="Add To Cart", width=22, height=2, bg='green', fg="white", activebackground='white',
+    left, text="Add To Cart", width=22, height=2, bg='purple', fg="white", activebackground='white',
     activeforeground='black', command=add_to_cart)
 add_to_cart_btn.place(x=350, y=450)
 # generate bill and change
 change_l = Label(left, text="Given Amount", font=(
-    'arial 18 bold'), bg='floral white')
+    'arial 18 bold'), bg='lavender')
 change_l.place(x=0, y=550)
 change_e = Entry(left, width=25, font=(
-    'arial 18 bold'), bg='orange')
+    'arial 18 bold'), bg='white')
 change_e.place(x=200, y=550)
 # button change
 change_btn = Button(left, text="Calculate Change",
-                    width=22, height=2, bg='green', fg="white", activebackground='white', activeforeground='black',
+                    width=22, height=2, bg='purple', fg="white", activebackground='white', activeforeground='black',
                     command=change_func)
 change_btn.place(x=360, y=590)
 # generate bill button
@@ -624,7 +619,7 @@ bill_btn = Button(left, text="Generate Bill", width=100,
                   height=2, bg='red', fg='white', command=generate_bill)
 bill_btn.place(x=0, y=640)
 c_amount = Label(left, text="",
-                 font=('arial 18 bold'), fg='red', bg='floral white')
+                 font=('arial 18 bold'), fg='red', bg='lavender')
 get_stock = 0
 get_name = 0
 get_id = 0
@@ -632,14 +627,14 @@ get_price = 0
 
 
 logout_btn1 = Button(left, text="Logout",
-                     height=2, bg='green', fg='white', command=lambda: show_frame(frame4))
-logout_btn1.place(x=300, y=490)
+                     height=2, bg='purple', fg='white', command=lambda: show_frame(frame4))
+logout_btn1.place(x=300, y=500)
 remove_btn = Button(left, text="remove",
-                    height=2, bg='green', fg='white', command=remove_item)
-remove_btn.place(x=400, y=490)
+                    height=2, bg='purple', fg='white', command=remove_item)
+remove_btn.place(x=400, y=500)
 clear_btn = Button(left, text="clear",
-                    height=2, bg='green', fg='white',command=clear_item)
-clear_btn.place(x=500, y=490)
+                    height=2, bg='purple', fg='white',command=clear_item)
+clear_btn.place(x=500, y=500)
 
 # --------------------------------------------Add to database----------------------------------------
 # functions in frame 2
@@ -723,23 +718,23 @@ result = c.execute("SELECT Max(id) from inventory")
 for r in result:
     id = r[0]
 heading = Label(frame2, text="Add to the database",
-                font=('arial 40 bold'), fg='steelblue')
+                font=('arial 40 bold'), fg='white',bg='purple')
 heading.place(x=400, y=0)
 # labels  for the window
-name_l = Label(frame2, text="Enter Product Name", font=('arial 18 bold'))
+name_l = Label(frame2, text="Enter Product Name", font=('arial 18 bold'),fg='white',bg='purple')
 name_l.place(x=0, y=70)
-stock_l = Label(frame2, text="Enter Stocks", font=('arial 18 bold'))
+stock_l = Label(frame2, text="Enter Stocks", font=('arial 18 bold'),fg='white',bg='purple')
 stock_l.place(x=0, y=120)
-cp_l = Label(frame2, text="Enter Cost Price", font=('arial 18 bold'))
+cp_l = Label(frame2, text="Enter Cost Price", font=('arial 18 bold'),fg='white',bg='purple')
 cp_l.place(x=0, y=170)
-sp_l = Label(frame2, text="Enter Selling Price", font=('arial 18 bold'))
+sp_l = Label(frame2, text="Enter Selling Price", font=('arial 18 bold'),fg='white',bg='purple')
 sp_l.place(x=0, y=220)
-vendor_l = Label(frame2, text="Enter Vendor Name", font=('arial 18 bold'))
+vendor_l = Label(frame2, text="Enter Vendor Name", font=('arial 18 bold'),fg='white',bg='purple')
 vendor_l.place(x=0, y=270)
 vendor_phone_l = Label(
-    frame2, text="Enter Vendor Phone Number", font=('arial 18 bold'))
+    frame2, text="Enter Vendor Phone Number", font=('arial 18 bold'),fg='white',bg='purple')
 vendor_phone_l.place(x=0, y=320)
-id_l = Label(frame2, text="Enter Vendor ID", font=('arial 18 bold'))
+id_l = Label(frame2, text="Enter Vendor ID", font=('arial 18 bold'),fg='white',bg='purple')
 id_l.place(x=0, y=370)
 # entries for the labels
 name2_e = Entry(frame2, width=25, font=('arial 18 bold'))
@@ -758,10 +753,10 @@ id_e = Entry(frame2, width=25, font=('arial 18 bold'))
 id_e.place(x=380, y=370)
 # button to add to the database
 btn_add = Button(frame2, text="Add To Database", width=25,
-                 height=2, bg='steelblue', fg='white', command=get_items)
+                 height=2, bg='brown', fg='white', command=get_items)
 btn_add.place(x=520, y=420)
 btn_clear = Button(frame2, text="Clear All Fields", width=18,
-                   height=2, bg='lightgreen', fg='white', command=clear_all)
+                   height=2, bg='lightgreen', fg='purple', command=clear_all)
 btn_clear.place(x=350, y=420)
 # text box for the logs
 tBox2 = Label(frame2, width=60, height=18, font=('arial 12 bold'))
@@ -787,11 +782,11 @@ ProductList3['values'] = products
 ProductList3.place(x=240, y=80)
 ProductList3.current(0)
 home_btn = Button(frame2, text="Home",
-                  height=2, bg='green', fg='white', command=lambda: show_frame(frame11))
+                  height=2, bg='brown', fg='white', command=lambda: show_frame(frame11))
 home_btn.place(x=30, y=490)
 
 logout_btn2 = Button(frame2, text="Logout",
-                     height=2, bg='green', fg='white', command=lambda: show_frame(frame4))
+                     height=2, bg='brown', fg='white', command=lambda: show_frame(frame4))
 logout_btn2.place(x=300, y=490)
 
 
@@ -888,10 +883,10 @@ result = c.execute("SELECT Max(id) from inventory")
 for r in result:
     id = r[0]
 heading = Label(frame3, text="Update the database",
-                font=('arial 40 bold'), fg='steelblue')
+                font=('arial 40 bold'), fg='white',bg='purple')
 heading.place(x=400, y=0)
 # label and entry for id
-id_le = Label(frame3, text="Enter Id", font=('arial 18 bold'))
+id_le = Label(frame3, text="Enter Id", font=('arial 18 bold'),fg='white',bg='purple')
 id_le.place(x=0, y=70)
 id_leb = Entry(frame3, font=('arial 18 bold'), width=10)
 id_leb.place(x=380, y=70)
@@ -913,28 +908,28 @@ ProductList['values'] = products
 ProductList.place(x=200, y=80)
 ProductList.current(0)
 btn_search = Button(frame3, text="Search", width=15,
-                    height=2, bg='orange', command=search)
+                    height=2, bg='purple', command=search)
 btn_search.place(x=550, y=70)
 
 # labels  for the window
-name_l = Label(frame3, text="Enter Product Name", font=('arial 18 bold'))
+name_l = Label(frame3, text="Enter Product Name", font=('arial 18 bold'),fg='white',bg='purple')
 name_l.place(x=0, y=120)
-stock_l = Label(frame3, text="Enter Stocks", font=('arial 18 bold'))
+stock_l = Label(frame3, text="Enter Stocks", font=('arial 18 bold'),fg='white',bg='purple')
 stock_l.place(x=0, y=170)
-cp_l = Label(frame3, text="Enter Cost Price", font=('arial 18 bold'))
+cp_l = Label(frame3, text="Enter Cost Price", font=('arial 18 bold'),fg='white',bg='purple')
 cp_l.place(x=0, y=220)
-sp_l = Label(frame3, text="Enter Selling Price", font=('arial 18 bold'))
+sp_l = Label(frame3, text="Enter Selling Price", font=('arial 18 bold'),fg='white',bg='purple')
 sp_l.place(x=0, y=270)
 totalcp_l = Label(frame3, text="Enter Total Cost Price",
-                  font=('arial 18 bold'))
+                  font=('arial 18 bold'),fg='white',bg='purple')
 totalcp_l.place(x=0, y=320)
 totalsp_l = Label(frame3, text="Enter Total Selling Price",
-                  font=('arial 18 bold'))
+                  font=('arial 18 bold'),fg='white',bg='purple')
 totalsp_l.place(x=0, y=370)
-vendor_l = Label(frame3, text="Enter Vendor Name", font=('arial 18 bold'))
+vendor_l = Label(frame3, text="Enter Vendor Name", font=('arial 18 bold'),fg='white',bg='purple')
 vendor_l.place(x=0, y=420)
 vendor_phone_l = Label(
-    frame3, text="Enter Vendor Phone Number", font=('arial 18 bold'))
+    frame3, text="Enter Vendor Phone Number", font=('arial 18 bold'),fg='white',bg='purple')
 vendor_phone_l.place(x=0, y=470)
 # entries for the labels
 name3_e = Entry(frame3, width=25, font=('arial 18 bold'))
@@ -955,30 +950,30 @@ vendor_phone3_e = Entry(frame3, width=25, font=('arial 18 bold'))
 vendor_phone3_e.place(x=380, y=470)
 # button to add to the database
 btn_add = Button(frame3, text="Update Database", width=25,
-                 height=2, bg='steelblue', fg='white', command=update)
+                 height=2, bg='purple', fg='white', command=update)
 btn_add.place(x=520, y=520)
 # text box for the logs
 tBox3 = Label(frame3, width=60, height=18, font=('arial 12 bold'))
 tBox3.place(x=750, y=70)
 tBox3.config(text="ID has reached upto: " + str(id), bg="white")
 home_btn = Button(frame3, text="Home",
-                  height=2, bg='green', fg='white', command=lambda: show_frame(frame11))
-home_btn.place(x=30, y=490)
+                  height=2, bg='brown', fg='white', command=lambda: show_frame(frame11))
+home_btn.place(x=30, y=590)
 
 logout_btn3 = Button(frame3, text="Logout",
-                     height=2, bg='green', fg='white', command=lambda: show_frame(frame4))
-logout_btn3.place(x=300, y=490)
+                     height=2, bg='brown', fg='white', command=lambda: show_frame(frame4))
+logout_btn3.place(x=300, y=590)
 
 
 
 
 
 home_btn = Button(frame5, text="Home",
-                      height=2, bg='green', fg='white', command=lambda: show_frame(frame11))
+                      height=2, bg='purple', fg='white', command=lambda: show_frame(frame11))
 home_btn.place(x=30, y=690)
 
 logout_btn3 = Button(frame5, text="Logout",
-                         height=2, bg='green', fg='white', command=lambda: show_frame(frame4))
+                         height=2, bg='purple', fg='white', command=lambda: show_frame(frame4))
 logout_btn3.place(x=300, y=690)
 
 
@@ -989,27 +984,27 @@ logout_btn3.place(x=300, y=690)
 #-----------------------------------------frame11 functions-------------------------------------
 
 
-add_btn = Button(frame11, text="Add products", width=15,
-                   height=2, bg='black', fg='white',command=lambda: show_frame(frame2))
-add_btn.place(x=640, y=150)
-update_btn = Button(frame11, text="Update",width=15,
-                    height=2, bg='black', fg='white', command=lambda: show_frame(frame3))
-update_btn.place(x=640, y=250)
-btn_app = Button(frame11, text="analysis", width=15,
-                    height=2, bg='black',fg='white', command=lambda: [show_frame(frame5),analysis(frame)])
-btn_app.place(x=640, y=350)
+add_btn = Button(frame11, text="Add Products", width=15,
+                   height=2,bg='lavender',fg='black',command=lambda: show_frame(frame2))
+add_btn.place(x=540, y=25)
+update_btn = Button(frame11, text="Update Products",width=15,
+                    height=2, bg='lavender',fg='black', command=lambda: show_frame(frame3))
+update_btn.place(x=540, y=125)
+btn_app = Button(frame11, text="Analysis", width=15,
+                    height=2,bg='lavender',fg='black', command=lambda: [show_frame(frame5),analysis(frame)])
+btn_app.place(x=540, y=225)
 logout_btn3 = Button(frame11, text="Logout",width=15,
-                         height=2, bg='black', fg='white', command=lambda: show_frame(frame4))
-logout_btn3.place(x=640, y=450)
-bar_btn = Button(frame11, text="bar chart",width=15,
-                         height=2, bg='black', fg='white', command=lambda: [show_frame(frame6),bar(frame)])
-bar_btn.place(x=640, y=550)
-log_btn = Button(frame11, text="change",width=15,
-                         height=2, bg='black', fg='white', command=lambda: show_frame(frame7))
-log_btn.place(x=640, y=650)
-log1_btn = Button(frame11, text="change 1",width=15,
-                         height=2, bg='black', fg='white', command=lambda: show_frame(frame8))
-log1_btn.place(x=440, y=650)
+                         height=2, bg='lavender',fg='black', command=lambda: show_frame(frame4))
+logout_btn3.place(x=540, y=625)
+bar_btn = Button(frame11, text="Data Visualization",width=15,
+                         height=2, bg='lavender',fg='black', command=lambda: [show_frame(frame6),bar(frame)])
+bar_btn.place(x=540, y=325)
+log_btn = Button(frame11, text="OwnLogin\nUpdate",width=15,
+                         height=3, bg='lavender',fg='black', command=lambda: show_frame(frame7))
+log_btn.place(x=540, y=425)
+log1_btn = Button(frame11, text="EmpLogin\nUpdate",width=15,
+                         height=3, bg='lavender',fg='black', command=lambda: show_frame(frame8))
+log1_btn.place(x=540, y=525)
 
 
 # --------------------------------------------frame7----------------------------------------
@@ -1018,40 +1013,40 @@ log1_btn.place(x=440, y=650)
 canvas = Canvas(frame7, width=725, height=384)
 canvas.place(x=335, y=140)
 
-canvas.create_rectangle(0, 0, 725, 700, fill='orange', outline="white")
+canvas.create_rectangle(0, 0, 725, 700, fill='lavender', outline="white")
 
-heading = Label(frame7, text="KJ Mart",
-                font=('arial 52 bold'), fg='white', bg="orange")
-heading.place(x=550, y=50)
+heading = Label(frame7, text="PANTRY PRIDE GROCERIES",
+                font=('arial 52 bold'), fg='white', bg="purple")
+heading.place(x=200, y=50)
 
-heading = Label(frame7, text="enter new username and password",
-                font=('arial 30 bold'), fg='white', bg="orange")
-heading.place(x=370, y=150)
+heading = Label(frame7, text="Enter owner new username and password",
+                font=('arial 20 bold'), fg='black', bg="lavender")
+heading.place(x=420, y=150)
 
 
 Uname2_l = Label(frame7, text="Username :", font=(
-    'arial 18 bold'), fg='white', bg="orange")
+    'arial 18 bold'), fg='purple', bg="lavender")
 Uname2_l.place(x=500, y=250)
 
 Uname2_e = Entry(frame7, width=25, font=('arial 18 bold'))
 Uname2_e.place(x=683, y=250)
 
 Passwd2_l = Label(frame7, text="Password :", font=(
-    'arial 18 bold'), fg='white', bg="orange")
+    'arial 18 bold'),fg='purple', bg="lavender")
 Passwd2_l.place(x=500, y=300)
 
 Passwd2_e = Entry(frame7, show='*', width=25, font=('arial 18 bold'))
 Passwd2_e.place(x=683, y=300)
 Passwd5_l = Label(frame7, text="Password must be minimum of 8 characters long and should start with a\n capital letter and contain numbers and a special character", font=(
-    'arial 10 bold'), fg='black',width=80, bg="orange")
+    'arial 10 bold'), fg='black',width=80, bg="lavender")
 Passwd5_l.place(x=400, y=350)
 
 Login8_btn = Button(frame7, text="change", font=(
     'arial 20'), width=7,
-                   height=1, bg='orange', fg='white',command=lambda: ownpas(Uname2_e.get(), Passwd2_e.get()))
+                   height=1, bg='purple', fg='lavender',command=lambda: ownpas(Uname2_e.get(), Passwd2_e.get()))
 Login8_btn.place(x=660, y=450)
 close_button = Button(frame7, text="close", font=('arial 20'), width=7,
-                   height=1, bg='orange', fg='white', command=lambda: show_frame(frame11))
+                   height=1, bg='purple', fg='lavender', command=lambda: show_frame(frame11))
 close_button.place(x=660,y=600)
 
 
@@ -1065,41 +1060,41 @@ close_button.place(x=660,y=600)
 canvas = Canvas(frame8, width=725, height=384)
 canvas.place(x=335, y=140)
 
-canvas.create_rectangle(0, 0, 725, 700, fill='orange', outline="white")
+canvas.create_rectangle(0, 0, 725, 700, fill='lavender', outline="white")
 
-heading = Label(frame8, text="KJ Mart",
-                font=('arial 52 bold'), fg='white', bg="orange")
-heading.place(x=550, y=50)
+heading = Label(frame8, text="PANTRY PRIDE GROCERIES",
+                font=('arial 52 bold'), fg='white', bg="purple")
+heading.place(x=200, y=50)
 
-heading = Label(frame8, text="enter new username and password",
-                font=('arial 30 bold'), fg='white', bg="orange")
-heading.place(x=370, y=150)
+heading = Label(frame8, text="Enter employee new username and password",
+                font=('arial 20 bold'), fg='black', bg="lavender")
+heading.place(x=420, y=150)
 
 
 
 Uname3_l = Label(frame8, text="Username :", font=(
-    'arial 18 bold'), fg='white', bg="orange")
+    'arial 18 bold'), fg='purple', bg="lavender")
 Uname3_l.place(x=500, y=250)
 
 Uname3_e = Entry(frame8, width=25, font=('arial 18 bold'))
 Uname3_e.place(x=683, y=250)
 
 Passwd3_l = Label(frame8, text="Password :", font=(
-    'arial 18 bold'), fg='white', bg="orange")
+    'arial 18 bold'), fg='purple', bg="lavender")
 Passwd3_l.place(x=500, y=300)
 
 Passwd3_e = Entry(frame8, show='*', width=25, font=('arial 18 bold'))
 Passwd3_e.place(x=683, y=300)
 Passwd4_l = Label(frame8, text="Password must be minimum of 8 characters long and should start with a\n capital letter and contain numbers and a special character", font=(
-    'arial 10 bold'), fg='black',width=80, bg="orange")
+    'arial 10 bold'), fg='black',width=80, bg="lavender")
 Passwd4_l.place(x=400, y=350)
 
 Login8_btn = Button(frame8, text="change", font=(
     'arial 20'), width=7,
-                   height=1, bg='orange', fg='white',command=lambda: emppas(Uname3_e.get(), Passwd3_e.get()))
+                   height=1, bg='purple', fg='white',command=lambda: emppas(Uname3_e.get(), Passwd3_e.get()))
 Login8_btn.place(x=660, y=450)
 close_button = Button(frame8, text="close", font=('arial 20'), width=7,
-                   height=1, bg='orange', fg='white', command=lambda: show_frame(frame11))
+                   height=1, bg='purple', fg='white', command=lambda: show_frame(frame11))
 close_button.place(x=660,y=600)
 
 
@@ -1114,9 +1109,9 @@ close_button.place(x=660,y=600)
 
 
 def own_login(U1name, Passwd1):
-    with open("C:\\Users\\Tejaswini\\Downloads\\o1.txt",'r') as f1:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\owner1.txt",'r') as f1:
         user1=f1.read()
-    with open("C:\\Users\\Tejaswini\\Downloads\\o2.txt",'r') as f2:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\owner2.txt",'r') as f2:
         pass1=f2.read()
 
     if U1name == user1 and Passwd1 == pass1:
@@ -1128,9 +1123,9 @@ def own_login(U1name, Passwd1):
             "Error", "Incorrect login Credentials")
 
 def auth_login(Uname, Passwd):
-    with open("C:\\Users\\Tejaswini\\Downloads\\e1.txt", 'r') as f3:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\emp1.txt", 'r') as f3:
         user = f3.read()
-    with open("C:\\Users\\Tejaswini\\Downloads\\e2.txt", 'r') as f4:
+    with open("C:\\Users\\shish\\OneDrive\\Documents\\emp2.txt", 'r') as f4:
         passw = f4.read()
     if Uname == user and Passwd == passw:
         show_frame(frame1)
@@ -1143,47 +1138,47 @@ def auth_login(Uname, Passwd):
 
 canvas = Canvas(frame4, width=725, height=384)
 canvas.place(x=335, y=140)
-canvas.create_rectangle(0, 0, 725, 700, fill='orange', outline="white")
-heading = Label(frame4, text="KJ Mart",
-                font=('arial 52 bold'), fg='white', bg="orange")
-heading.place(x=550, y=50)
+canvas.create_rectangle(0, 0, 725, 700, fill='purple', outline="white")
+heading = Label(frame4, text="PANTRY PRIDE GROCERIES",
+                font=('arial 52 bold'), fg='white', bg="purple")
+heading.place(x=200, y=50)
 heading = Label(frame4, text="Employee ",
-                font=('arial 40 bold'), fg='white', bg="orange")
+                font=('arial 40 bold'), fg='white', bg="purple")
 heading.place(x=400, y=200)
 heading = Label(frame4, text="Owner ",
-                font=('arial 40 bold'), fg='white', bg="orange")
+                font=('arial 40 bold'), fg='white', bg="purple")
 heading.place(x=770, y=200)
 
 
 Uname_l = Label(frame4, text="Username :", font=(
-    'arial 15 bold'), fg='white', bg="orange")
+    'arial 15 bold'), fg='white', bg="purple")
 Uname_l.place(x=350, y=300)
 Uname_e = Entry(frame4, width=15, font=('arial 15 bold'))
 Uname_e.place(x=483, y=300)
 Passwd_l = Label(frame4, text="Password :", font=(
-    'arial 15 bold'), fg='white', bg="orange")
+    'arial 15 bold'), fg='white', bg="purple")
 Passwd_l.place(x=350, y=350)
 Passwd_e = Entry(frame4, show='*', width=15, font=('arial 15 bold'))
 Passwd_e.place(x=483, y=350)
 Login_btn = Button(frame4, text="Login", font=(
     'arial 20'), width=7,
-                   height=1, bg='orange', fg='white', command=lambda: auth_login(Uname_e.get(), Passwd_e.get()))
+                   height=1, bg='brown', fg='white', command=lambda: auth_login(Uname_e.get(), Passwd_e.get()))
 Login_btn.place(x=430, y=440)
 
 
 U1name_l = Label(frame4, text="Username :", font=(
-    'arial 15 bold'), fg='white', bg="orange")
+    'arial 15 bold'), fg='white', bg="purple")
 U1name_l.place(x=740, y=300)
 U1name_e = Entry(frame4, width=15, font=('arial 15 bold'))
 U1name_e.place(x=873, y=300)
 Passwd1_l = Label(frame4, text="Password :", font=(
-    'arial 15 bold'), fg='white', bg="orange")
+    'arial 15 bold'), fg='white', bg="purple")
 Passwd1_l.place(x=740, y=350)
 Passwd1_e = Entry(frame4, show='*', width=15, font=('arial 15 bold'))
 Passwd1_e.place(x=873, y=350)
 Login1_btn = Button(frame4, text="Login", font=(
     'arial 20'), width=7,
-                   height=1, bg='orange', fg='white', command=lambda: own_login(U1name_e.get(), Passwd1_e.get()))
+                   height=1, bg='brown', fg='white', command=lambda: own_login(U1name_e.get(), Passwd1_e.get()))
 Login1_btn.place(x=820, y=440)
 
 
